@@ -107,8 +107,8 @@ set termencoding=utf-8
 set fileencodings=utf-8,cp936,ucs-bom,shift-jis,latin1,big5,gb18030,gbk,gb2312
 
 source $VIMRUNTIME/delmenu.vim
-"set guifont=Consolas:h11
-"set guifontwide=NSimSun:h12
+set guifont=Monaco:h14
+set guifontwide=华文宋体:h12
 
 "remove scratch preview window
 set completeopt-=preview
