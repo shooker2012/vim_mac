@@ -116,11 +116,11 @@ set completeopt-=preview
 "set list char
 set listchars=tab:→→,trail:□
 
-"set swap files directory
-set directory=$TEMP
+" "set swap files directory
+" set directory=$TEMP
 
-"set backup files directory
-set backupdir=$TEMP
+" "set backup files directory
+" set backupdir=$TEMP
 
 "map , to copy and pase
 nnoremap <silent> , "0
@@ -265,7 +265,7 @@ function! s:ChangeProjDir( type, isChangeDir )
 		copen
 		autocmd BufRead *.lua UpdateTypesFileOnly
 
-		nnoremap <silent> <F5> :silent !ctags --langdef=MYLUA --langmap=MYLUA:.lua --regex-MYLUA="/^.*\s*function\s*(\w+):(\w+).*$/\2/f/" --regex-MYLUA="/^\s*(\w+)\s*=\s*[0-9]+.*$/\1/e/" --regex-MYLUA="/^.*\s*function\s*(\w+)\.(\w+).*$/\2/f/" --regex-MYLUA="/^.*\s*function\s*(\w+)\s*\(.*$/\1/f/" --regex-MYLUA="/^\s*(\w+)\s*=\s*\{.*$/\1/n/" --regex-MYLUA="/^\s*module\s+\""(\w+)\"".*$/\1/m,module/" --regex-MYLUA="/^\s*module\s+\""[a-zA-Z0-9._]+\.(\w+)\"".*$/\1/m,module/" --languages=MYLUA --excmd=number -R .<CR>
+		nnoremap <silent> <F5> :silent !ctags --langdef=MYLUA --langmap=MYLUA:.lua --regex-MYLUA="/^.*\s*function\s*([^\s]+):([^\s]+).*$/\\2/f/" --regex-MYLUA="/^\s*([^\s]+)\s*=\s*[0-9]+.*$/\\1/e/" --regex-MYLUA="/^.*\s*function\s*([^\s]+)\.([^\s]+).*$/\\2/f/" --regex-MYLUA="/^.*\s*function\s*([^\s]+)\s*\(.*$/\\1/f/" --regex-MYLUA="/^\s*([^\s]+)\s*=\s*\{.*$/\\1/e/" --regex-MYLUA="/^\s*module\s+\"([^\s]+)\".*$/\\1/m,module/" --regex-MYLUA="/^\s*module\s+\"[a-zA-Z0-9._]+\.([^\s]+)\".*$/\\1/m,module/" --languages=MYLUA --excmd=number -R .<CR>
 	endif
 endfunc
 command! -nargs=1 SetProjType call s:ChangeProjDir(<f-args>, 0)
