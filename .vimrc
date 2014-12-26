@@ -265,7 +265,7 @@ function! s:ChangeProjDir( type, isChangeDir )
 		copen
 		autocmd BufRead *.lua UpdateTypesFileOnly
 
-		nnoremap <silent> <F5> :silent !ctags --langdef=MYLUA --langmap=MYLUA:.lua --regex-MYLUA="/^.*\s*function\s*([^\s]+):([^\s]+).*$/\\2/f/" --regex-MYLUA="/^\s*([^\s]+)\s*=\s*[0-9]+.*$/\\1/e/" --regex-MYLUA="/^.*\s*function\s*([^\s]+)\.([^\s]+).*$/\\2/f/" --regex-MYLUA="/^.*\s*function\s*([^\s]+)\s*\(.*$/\\1/f/" --regex-MYLUA="/^\s*([^\s]+)\s*=\s*\{.*$/\\1/e/" --regex-MYLUA="/^\s*module\s+\"([^\s]+)\".*$/\\1/m,module/" --regex-MYLUA="/^\s*module\s+\"[a-zA-Z0-9._]+\.([^\s]+)\".*$/\\1/m,module/" --languages=MYLUA --excmd=number -R .<CR>
+		nnoremap <silent> <F5> :silent !ctags --langdef=MYLUA --langmap=MYLUA:.lua --regex-MYLUA="/^.*\s*function\s*([^\s:.]+):([^\s:.]+).*$/\\2/f/" --regex-MYLUA="/^\s*([^\s:.]+)\s*=\s*[0-9]+.*$/\\1/e/" --regex-MYLUA="/^.*\s*function\s*([^\s:.]+)\.([^\s:.]+).*$/\\2/f/" --regex-MYLUA="/^.*\s*function\s*([^\s:.]+)\s*\(.*$/\\1/f/" --regex-MYLUA="/^\s*([^\s:.]+)\s*=\s*\{.*$/\\1/e/" --regex-MYLUA="/^\s*module\s+\"([^\s:.]+)\".*$/\\1/m,module/" --regex-MYLUA="/^\s*module\s+\"[a-zA-Z0-9._]+\.([^\s:.]+)\".*$/\\1/m,module/" --languages=MYLUA --excmd=number -R .<CR>
 	endif
 endfunc
 command! -nargs=1 SetProjType call s:ChangeProjDir(<f-args>, 0)
