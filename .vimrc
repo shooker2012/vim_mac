@@ -246,6 +246,24 @@ let g:ag_apply_qmappings=0
 let g:ag_apply_lmappings=0
 let g:aghighlight=1
 
+" map quick fix window.
+function! s:MapQuickFixWindow()
+	botright copen
+	nnoremap <silent> <buffer> h  <C-W><CR><C-w>K
+	nnoremap <silent> <buffer> H  <C-W><CR><C-w>K<C-w>b
+	nnoremap <silent> <buffer> o  <CR>
+	nnoremap <silent> <buffer> t  <C-w><CR><C-w>T
+	nnoremap <silent> <buffer> T  <C-w><CR><C-w>TgT<C-W><C-W>
+	" nnoremap <silent> <buffer> v  <C-w><CR><C-w>H<C-W>b<C-W>J<C-W>t
+
+	nnoremap <silent> <buffer> e <CR><C-w><C-w>:cclose<CR>'
+	nnoremap <silent> <buffer> go <CR>:copen<CR>
+	nnoremap <silent> <buffer> q  :cclose<CR>
+	nnoremap <silent> <buffer> gv :let b:height=winheight(0)<CR><C-w><CR><C-w>H:copen<CR><C-w>J:exe printf(":normal %d\<lt>c-w>_", b:height)<CR>
+endfunc
+" call <SID>MapQuickFixWindow()
+command! -nargs=0 Copen call <SID>MapQuickFixWindow()
+
 "[function]ChangProjDir: When Open .vimproj file, change current directory
 "and NerdTree to the folder of the file.
 function! s:ChangeProjDir( type, isChangeDir )
@@ -267,6 +285,8 @@ function! s:ChangeProjDir( type, isChangeDir )
 
 		nnoremap <silent> <F5> :silent !ctags --langdef=MYLUA --langmap=MYLUA:.lua --regex-MYLUA="/^.*\s*function\s*([^.:\\(\\)\\{\\}]+):([^.:\\(\\)\\{\\}]+).*$/\\2/f/" --regex-MYLUA="/^\s*([^.:\\(\\)\\{\\}]+)\s*=\s*[0-9]+.*$/\\1/e/" --regex-MYLUA="/^.*\s*function\s*([^.:\\(\\)\\{\\}]+)\.([^.:\\(\\)\\{\\}]+).*$/\\2/f/" --regex-MYLUA="/^.*\s*function\s*([^.:\\(\\)\\{\\}]+)\s*\(.*$/\\1/f/" --regex-MYLUA="/^\s*([^.:\\(\\)\\{\\}]+)\s*=\s*\{.*$/\\1/e/" --regex-MYLUA="/^\s*module\s+\"([^.:\\(\\)\\{\\}]+)\".*$/\\1/m,module/" --regex-MYLUA="/^\s*module\s+\"[a-zA-Z0-9._]+\.([^.:\\(\\)\\{\\}]+)\".*$/\\1/m,module/" --languages=MYLUA --excmd=number -R .<CR>
 	endif
+
+	call <SID>MapQuickFixWindow()
 endfunc
 command! -nargs=1 SetProjType call s:ChangeProjDir(<f-args>, 0)
 
@@ -305,21 +325,3 @@ xnoremap <F2> :<C-u>call <SID>VSetSearch()<CR>/<C-R>=@/<CR><CR>N:vim /<C-R>=@/<C
 
 " map ctrl-r + register not auto-indent in insert mode
 inoremap <C-R> <C-R><C-O>
-
-" map quick fix window.
-function! s:MapQuickFixWindow()
-	botright copen
-	nnoremap <silent> <buffer> h  <C-W><CR><C-w>K
-	nnoremap <silent> <buffer> H  <C-W><CR><C-w>K<C-w>b
-	nnoremap <silent> <buffer> o  <CR>
-	nnoremap <silent> <buffer> t  <C-w><CR><C-w>T
-	nnoremap <silent> <buffer> T  <C-w><CR><C-w>TgT<C-W><C-W>
-	" nnoremap <silent> <buffer> v  <C-w><CR><C-w>H<C-W>b<C-W>J<C-W>t
-
-	nnoremap <silent> <buffer> e <CR><C-w><C-w>:cclose<CR>'
-	nnoremap <silent> <buffer> go <CR>:copen<CR>
-	nnoremap <silent> <buffer> q  :cclose<CR>
-	nnoremap <silent> <buffer> gv :let b:height=winheight(0)<CR><C-w><CR><C-w>H:copen<CR><C-w>J:exe printf(":normal %d\<lt>c-w>_", b:height)<CR>
-endfunc
-call <SID>MapQuickFixWindow()
-
