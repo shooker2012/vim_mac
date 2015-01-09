@@ -1,0 +1,2 @@
+sudo ./configure && make all && sudo make install
+export PATH="/usr/local/bin:$PATH"
