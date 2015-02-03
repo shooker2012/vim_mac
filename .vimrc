@@ -135,6 +135,12 @@ vnoremap <silent> <F10> :!start explorer.exe /select,%:p<CR><CR>
 "map F9 to create a new tab and open currentfile and mirror NERDTREE
 nnoremap <silent> <F9> :tabe %<CR>:NERDTreeFind<CR><C-W>l:copen<CR><C-W>k
 
+"map g[ or g] to like [{ and ]}
+nnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
+xnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
+nnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
+xnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
+
 "set syntax rules for glsl and hlsl
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.fsh,*.vsh setf glsl
 au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.vsh,*.psh setf fx
