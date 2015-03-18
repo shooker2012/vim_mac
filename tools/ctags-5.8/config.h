@@ -250,7 +250,7 @@
 
 /* If you wish to change the directory in which temporary files are stored,
    define this label to the directory desired. */
-#define TMPDIR "/tmp"
+#define TMPDIR "/var/folders/64/hhwl71tn0dd4m9r0sw1d96yr0000gn/T/"
 
 /* Package version. */
 /* #undef VERSION */
