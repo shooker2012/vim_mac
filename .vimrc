@@ -128,6 +128,9 @@ vnoremap <silent> , "0
 nnoremap <silent> _ ,
 vnoremap <silent> _ ,
 
+"map F5 to use ctags
+nnoremap <silent> <F5> :silent !ctags -R .<CR>
+
 "map F9 to create a new tab and open currentfile and mirror NERDTREE
 nnoremap <silent> <F9> :tabe %<CR>:NERDTreeFind<CR><C-W>l:copen<CR><C-W>k
 
@@ -318,8 +321,8 @@ function! s:EscapeForSearchVisual()
 
 	let @s = temp
 endfunction
-nnoremap <F6> :<C-u>call <SID>EscapeForSearch()<CR>:silent grep! <C-R>=@/<CR><CR>
-xnoremap <F6> :<C-u>call <SID>EscapeForSearchVisual()<CR>:silent grep! <C-R>=@/<CR><CR>
+nnoremap <F3> :<C-u>call <SID>EscapeForSearch()<CR>:silent grep! <C-R>=@/<CR><CR>
+xnoremap <F3> :<C-u>call <SID>EscapeForSearchVisual()<CR>:silent grep! <C-R>=@/<CR><CR>
 
 " map F2 to search selected in current file
 nnoremap <F2> :vim //j %<CR>
