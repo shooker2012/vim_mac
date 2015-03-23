@@ -303,7 +303,6 @@ autocmd BufReadPost _vimproj call s:ChangeProjDir("", 1)
 function! s:EscapeForSearch()
 	if @" != "" 
 		let @/ = '"' . escape(@", '/\ "%') . '"'
-		let @/ = s:EscapeForWindowsCMDC( @/ )
 	else
 		if @/ == ""
 			let @/ = "!!!something_for_nothing!!!"
@@ -316,7 +315,6 @@ function! s:EscapeForSearchVisual()
 
 	" let hasSpace = stridx(@", " ")
 	let @/ = '"' . escape(@s, '/\ "%') . '"'
-	let @/ = s:EscapeForWindowsCMDC( @/ )
 	let @/ = substitute( @/, '\n', '\\n', 'g' )
 
 	let @s = temp
