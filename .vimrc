@@ -128,18 +128,15 @@ vnoremap <silent> , "0
 nnoremap <silent> _ ,
 vnoremap <silent> _ ,
 
-"map F10 to open current file's folder
-nnoremap <silent> <F10> :!start explorer.exe /select,%:p<CR><CR>
-vnoremap <silent> <F10> :!start explorer.exe /select,%:p<CR><CR>
+"map F5 to use ctags
+nnoremap <silent> <F5> :silent !ctags -R .<CR>
 
 "map F9 to create a new tab and open currentfile and mirror NERDTREE
 nnoremap <silent> <F9> :tabe %<CR>:NERDTreeFind<CR><C-W>l:copen<CR><C-W>k
 
-"map g[ or g] to like [{ and ]}
-nnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
-xnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
-nnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
-xnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
+"map F10 to open current file's folder
+nnoremap <silent> <F10> :!open .<CR><CR>
+vnoremap <silent> <F10> :!open .<CR><CR>
 
 "set syntax rules for glsl and hlsl
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.fsh,*.vsh setf glsl
@@ -158,7 +155,7 @@ colorscheme solarized
 autocmd FileType lua set commentstring=--\ %s
 
 "[plugin]tagbar config
-nnoremap <silent> <F4> :TagbarToggle<CR>
+nnoremap <silent> <F4> :TagbarOpen fj<CR>
 
 "[plugin]ctags config
 set autochdir
@@ -234,7 +231,7 @@ map <Leader>gE <Plug>(easymotion-gE)
 
 "[plugin]Auto-paris
 let g:AutoPairsShortcutFastWrap='<M-m>'
-let g:AutoPairsMapSpace=0
+" let g:AutoPairsMapSpace=0
 
 "[plugin]ag
 let g:aghighlight=1
@@ -277,6 +274,8 @@ function! s:ChangeProjDir( type, isChangeDir )
 		set noautochdir
 		cd %:p:h
 		NERDTree %:p:h
+		
+		let g:ctrlp_working_path_mode = 'a'
 	endif
 
 	" Project custom config
@@ -305,7 +304,6 @@ autocmd BufReadPost _vimproj call s:ChangeProjDir("", 1)
 function! s:EscapeForSearch()
 	if @" != "" 
 		let @/ = '"' . escape(@", '/\ "%') . '"'
-		let @/ = s:EscapeForWindowsCMDC( @/ )
 	else
 		if @/ == ""
 			let @/ = "!!!something_for_nothing!!!"
@@ -318,13 +316,12 @@ function! s:EscapeForSearchVisual()
 
 	" let hasSpace = stridx(@", " ")
 	let @/ = '"' . escape(@s, '/\ "%') . '"'
-	let @/ = s:EscapeForWindowsCMDC( @/ )
 	let @/ = substitute( @/, '\n', '\\n', 'g' )
 
 	let @s = temp
 endfunction
-nnoremap <F6> :<C-u>call <SID>EscapeForSearch()<CR>:silent grep! <C-R>=@/<CR><CR>
-xnoremap <F6> :<C-u>call <SID>EscapeForSearchVisual()<CR>:silent grep! <C-R>=@/<CR><CR>
+nnoremap <F3> :<C-u>call <SID>EscapeForSearch()<CR>:silent grep! <C-R>=@/<CR><CR>
+xnoremap <F3> :<C-u>call <SID>EscapeForSearchVisual()<CR>:silent grep! <C-R>=@/<CR><CR>
 
 " map F2 to search selected in current file
 nnoremap <F2> :vim //j %<CR>
