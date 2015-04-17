@@ -96,9 +96,6 @@ set number
 set tabstop=4
 set shiftwidth=4
 
-"Use system clipboard default
-set clipboard=unnamed
-
 "set encoding
 set fileencoding=utf-8
 set encoding=utf-8
@@ -127,6 +124,18 @@ nnoremap <silent> , "0
 vnoremap <silent> , "0
 nnoremap <silent> _ ,
 vnoremap <silent> _ ,
+nnoremap <silent> <Leader>p "*p
+vnoremap <silent> <Leader>p "*p
+nnoremap <silent> <Leader>y "*y
+vnoremap <silent> <Leader>y "*y
+nnoremap <silent> <Leader>P "*P
+vnoremap <silent> <Leader>P "*P
+nnoremap <silent> <Leader>Y "*Y
+vnoremap <silent> <Leader>Y "*Y
+
+" "Use system clipboard default
+" set clipboard=unnamed
+
 
 "map F5 to use ctags
 nnoremap <silent> <F5> :silent !ctags -R .<CR>
