@@ -150,6 +150,9 @@ nnoremap <silent> <F9> :tabe %<CR>:NERDTreeFind<CR><C-W>l:copen<CR><C-W>k
 nnoremap <silent> <F10> :!open .<CR><CR>
 vnoremap <silent> <F10> :!open .<CR><CR>
 
+"map vP to select changed area.
+nnoremap <silent> vP `[v`]
+
 "set syntax rules for glsl and hlsl
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.fsh,*.vsh setf glsl
 au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.vsh,*.psh setf fx
@@ -282,17 +285,36 @@ command! -nargs=0 Copen call <SID>MapQuickFixWindow()
 
 "[function]ChangProjDir: When Open .vimproj file, change current directory
 "and NerdTree to the folder of the file.
-function! s:ChangeProjDir( type, isChangeDir )
-	if a:isChangeDir == 1
-		set noautochdir
-		cd %:p:h
-		NERDTree %:p:h
-		
+" function! s:ChangeProjDir( type, dir, isChangeDir )
+function! s:ChangeProjDir(...)
+	if a:0 == 1
+		let type = a:{1}
+		let isChangeDir = 0
+		let dirStr = ""
+	elseif a:0 >= 2
+		let type = a:{1}
+		let isChangeDir = 1
+		let dirStr = a:{2}
+	endif
+
+	if isChangeDir == 1
+		if dirStr == ""
+			set noautochdir
+			cd %:p:h
+			NERDTree %:p:h
+		else
+			set noautochdir
+
+			echo dirStr
+			exe "cd ".dirStr
+			exe "NERDTree ".dirStr
+		endif
+
 		let g:ctrlp_working_path_mode = 'a'
 	endif
 
 	" Project custom config
-	if a:type == "lua"
+	if type == "lua"
 		set grepprg=grep\ -n\ -r\ --include=*.lua\ $*\ *
 		" set grepprg=ag\ --column
 
@@ -306,12 +328,12 @@ function! s:ChangeProjDir( type, isChangeDir )
 
 	call <SID>MapQuickFixWindow()
 endfunc
-command! -nargs=1 SetProjType call s:ChangeProjDir(<f-args>, 1)
-command! -nargs=* SetProjTypeFull call s:ChangeProjDir(<f-args>)
+command! -nargs=1 SetProjType call s:ChangeProjDir(<f-args>)
+command! -nargs=* OpenProj call s:ChangeProjDir(<f-args>)
 
-autocmd BufReadPost lua.vimproj call s:ChangeProjDir("lua", 1)
-autocmd BufReadPost *.vimproj call s:ChangeProjDir("", 1)
-autocmd BufReadPost _vimproj call s:ChangeProjDir("", 1)
+autocmd BufReadPost lua.vimproj call s:ChangeProjDir("lua", "")
+autocmd BufReadPost *.vimproj call s:ChangeProjDir("", "")
+autocmd BufReadPost _vimproj call s:ChangeProjDir("", "")
 
 " map F3 to search selected
 function! s:EscapeForSearch()
