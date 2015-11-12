@@ -75,6 +75,16 @@ if has("autocmd")
 
   augroup END
 
+
+  " [plugin]commentary config
+  autocmd FileType lua set commentstring=--\ %s
+
+  "[plugin]Fugitive
+  autocmd User fugitive 
+              \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+              \   nnoremap <buffer> .. :edit %:h<CR> |
+              \ endif
+  autocmd BufReadPost fugitive://* set bufhidden=delete
 else
 
   set autoindent		" always set autoindenting on
@@ -96,6 +106,9 @@ set number
 set tabstop=4
 set shiftwidth=4
 
+" except '_' from word
+" set iskeyword=@,48-57,128-167,224-235
+
 "set encoding
 set fileencoding=utf-8
 set encoding=utf-8
@@ -111,7 +124,7 @@ set guifontwide=华文宋体:h12
 set completeopt-=preview
 
 "set list char
-set listchars=tab:→→,trail:□
+set listchars=tab:■■,trail:▓
 
 "set large file size
 let g:LargeFile=10
@@ -150,8 +163,16 @@ nnoremap <silent> <F9> :tabe %<CR>:NERDTreeFind<CR><C-W>l:copen<CR><C-W>k
 nnoremap <silent> <F10> :!open .<CR><CR>
 vnoremap <silent> <F10> :!open .<CR><CR>
 
+"map [t and ]t: jump to parent tag
+nnoremap ]t vatatv
+nnoremap [t vatatov
+
 "map vP to select changed area.
 nnoremap <silent> vP `[v`]
+
+"map for command mode
+cnoremap <F1> <C-R>=escape()<Left>
+cnoremap <F2> <C-R>=expand("")<Left><Left>
 
 "set syntax rules for glsl and hlsl
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.fsh,*.vsh setf glsl
@@ -159,15 +180,15 @@ au BufNewFile,BufRead *.hlsl,*.fx,*.fxh,*.vsh,*.psh setf fx
 
 
 " [plugin]pathogen config
+" let g:pathogen_disabled = []
+" call add(g:pathogen_disabled, 'some_thing_name')
 execute pathogen#infect()
 
 " [plugin]solarized config
 syntax enable
 set background=dark
-colorscheme solarized
-
-" [plugin]commentary config
-autocmd FileType lua set commentstring=--\ %s
+colorscheme eva-unit-02
+" other colorscheme: sonofobsidian/dracula/Tomorrow/vividchalk
 
 "[plugin]tagbar config
 nnoremap <silent> <F4> :TagbarOpen fj<CR>
@@ -180,9 +201,12 @@ set autochdir
 let NERDTreeShowBookmarks=1
 let NERDMenuMode=1
 
+"[plugin]Fugitive
+set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+
 "shortcut
-nnoremap <silent> <unique> <C-l> :<C-u>nohlsearch<CR>:<C-u>MarkClear<CR><C-l>
-nnoremap <silent> <unique> <C-k> :<C-u>Mark<CR>
+nnoremap <silent> <C-l> :<C-u>nohlsearch<CR>:<C-u>MarkClear<CR><C-l>
+nnoremap <silent> <C-k> :<C-u>Mark<CR>
 
 " search and hightlight, but not move the next matching
 nnoremap * *N
@@ -201,6 +225,12 @@ endfunction
 "map & to :&&. means reapeat the last :substitute command with flags.
 nnoremap & :&&<CR>
 xnoremap & :&&<CR>
+
+"map g[ or g] to like [{ and ]}
+nnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
+xnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
+nnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
+xnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
 
 "[plugin]neocomplcache installation
 let g:neocomplcache_enable_at_startup = 1
@@ -283,57 +313,10 @@ endfunc
 " call <SID>MapQuickFixWindow()
 command! -nargs=0 Copen call <SID>MapQuickFixWindow()
 
-"[function]ChangProjDir: When Open .vimproj file, change current directory
-"and NerdTree to the folder of the file.
-" function! s:ChangeProjDir( type, dir )
-function! s:ChangeProjDir(...)
-	if a:0 == 1
-		let type = a:{1}
-		let isChangeDir = 0
-		let dirStr = ""
-	elseif a:0 >= 2
-		let type = a:{1}
-		let isChangeDir = 1
-		let dirStr = a:{2}
-	endif
 
-	if isChangeDir == 1
-		if dirStr == ""
-			set noautochdir
-			cd %:p:h
-			NERDTree %:p:h
-		else
-			set noautochdir
+" [plugin]SalProj
+let g:salproj_awake = 1
 
-			echo dirStr
-			exe "cd ".dirStr
-			exe "NERDTree ".dirStr
-		endif
-
-		let g:ctrlp_working_path_mode = 'a'
-	endif
-
-	" Project custom config
-	if type == "lua"
-		set grepprg=grep\ -n\ -r\ --include=*.lua\ $*\ *
-		" set grepprg=ag\ --column
-
-		let g:agprg="ag --column -G .*\\.lua"
-
-		copen
-		autocmd BufRead *.lua UpdateTypesFileOnly
-
-		nnoremap <silent> <F5> :silent !ctags --langdef=MYLUA --langmap=MYLUA:.lua --regex-MYLUA="/^.*\s*function\s*([^.:\\(\\)\\{\\}]+):([^.:\\(\\)\\{\\}]+).*$/\\2/f/" --regex-MYLUA="/^\s*([^.:\\(\\)\\{\\}]+)\s*=\s*[0-9]+.*$/\\1/e/" --regex-MYLUA="/^.*\s*function\s*([^.:\\(\\)\\{\\}]+)\.([^.:\\(\\)\\{\\}]+).*$/\\2/f/" --regex-MYLUA="/^.*\s*function\s*([^.:\\(\\)\\{\\}]+)\s*\(.*$/\\1/f/" --regex-MYLUA="/^\s*([^.:\\(\\)\\{\\}]+)\s*=\s*\{.*$/\\1/e/" --regex-MYLUA="/^\s*module\s+\"([^.:\\(\\)\\{\\}]+)\".*$/\\1/m,module/" --regex-MYLUA="/^\s*module\s+\"[a-zA-Z0-9._]+\.([^.:\\(\\)\\{\\}]+)\".*$/\\1/m,module/" --languages=MYLUA --excmd=number -R .<CR>
-	endif
-
-	call <SID>MapQuickFixWindow()
-endfunc
-command! -nargs=1 SetProjType call s:ChangeProjDir(<f-args>)
-command! -nargs=* OpenProj call s:ChangeProjDir(<f-args>)
-
-autocmd BufReadPost lua.vimproj source %:p | call s:ChangeProjDir("lua", "") 
-autocmd BufReadPost *.vimproj call s:ChangeProjDir("", "")
-autocmd BufReadPost _vimproj source %:p | call s:ChangeProjDir("", "")
 
 " map F3 to search selected
 function! s:EscapeForSearch()
@@ -427,3 +410,23 @@ nnoremap <C-H> :Hexmode<CR>
 inoremap <C-H> <Esc>:Hexmode<CR>
 vnoremap <C-H> :<C-U>Hexmode<CR>
 " Hex mode end.==========
+
+" Copy matches to register.
+" Search for a pattern, then enter :CopyMatches to copy all matches to the clipboard, or :CopyMatches x where x is any register to hold the result.
+function! CopyMatches(reg) range
+  let hits = []
+  execute a:firstline.",".a:lastline.'s//\=len(add(hits, submatch(0))) ? submatch(0) : ""/ge'
+
+  let reg = empty(a:reg) ? '+' : a:reg
+  " clear register
+  execute 'let @'.tolower(reg).' = ""'
+  " copy matches to reigster
+  execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+  
+  " cancle the %s changes.
+  normal u
+  " Back to the position before
+  exec "normal 2\<C-O>"
+endfunction
+command! -range=% -register CopyMatches call CopyMatches(<q-reg>)
+command! -range=% -register CM <line1>,<line2> call CopyMatches(<q-reg>)
