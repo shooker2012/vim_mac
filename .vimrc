@@ -124,7 +124,7 @@ set guifontwide=华文宋体:h12
 set completeopt-=preview
 
 "set list char
-set listchars=tab:■■,trail:▓
+set listchars=tab:■■,trail:▓,eol:▼
 
 "set large file size
 let g:LargeFile=10
@@ -228,10 +228,10 @@ nnoremap & :&&<CR>
 xnoremap & :&&<CR>
 
 "map g[ or g] to like [{ and ]}
-nnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
-xnoremap g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
-nnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
-xnoremap g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
+nnoremap <silent> g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
+xnoremap <silent> g[ :<C-u>call searchpair('\[', '', '\]', 'bW' )<CR>
+nnoremap <silent> g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
+xnoremap <silent> g] :<C-u>call searchpair('\[', '', '\]', 'W' )<CR>
 
 "[plugin]neocomplcache installation
 let g:neocomplcache_enable_at_startup = 1
