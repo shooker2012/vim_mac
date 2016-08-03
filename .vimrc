@@ -316,8 +316,10 @@ command! -nargs=0 Copen call <SID>MapQuickFixWindow()
 
 
 " [plugin]SalProj
-let g:salproj_awake = 1
+let g:sal_proj_awake = 1
 
+" [plugin]SalCleanNLatEOF
+" let g:sal_auto_clean_nl_file_type = [ "*.lua" ]
 
 " map F3 to search selected
 function! s:EscapeForSearch()
